@@ -1,64 +1,1149 @@
 /*
- * Copyright (c) 2020 The ZMK Contributors
- *
- * SPDX-License-Identifier: MIT
- */
+    Adapted ZMK keymap for tbkmini 3x6 from Charybdis 4x6
+    Copyright (c) 2023 The ZMK Contributors
+    SPDX-License-Identifier: MIT
+*/
 
 #include <behaviors.dtsi>
-#include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
 
-#define DEF 0
-#define LWR 1
-#define RSE 2
-#define ADJ 3
+#define BASE 0
+#define LOWER 1
+#define SYMB 2
+#define NAV 3
+#define ADJUST 4
+#define COLEMAK_DH 5
+#define GAMING 6
 
+// Optimized global settings
 &lt {
-    quick_tap_ms = <200>;
+    tapping-term-ms = <180>;
+    quick-tap-ms = <120>;
+    flavor = "balanced";
 };
 
 &mt {
-    quick_tap_ms = <200>;
+    tapping-term-ms = <190>;
+    quick-tap-ms = <120>;
+    flavor = "balanced";
+};
+
+&sk {
+    release-after-ms = <1500>;
+    quick-release;
+};
+
+&caps_word {
+    continue-list = <UNDERSCORE MINUS BACKSPACE DELETE>;
 };
 
 / {
+    combos {
+        compatible = "zmk,combos";
+        
+        // Frequent symbols with one hand (only QWERTY layer)
+        combo_esc {
+            timeout-ms = <40>;
+            key-positions = <7 8>;  // Adapted for 3x6 matrix
+            bindings = <&kp ESC>;
+            layers = <BASE>;
+        };
+        
+        combo_tab {
+            timeout-ms = <40>;
+            key-positions = <0 1>;  // Adapted for 3x6 matrix
+            bindings = <&kp TAB>;
+            layers = <BASE>;
+        };
+        
+        combo_enter {
+            timeout-ms = <40>;
+            key-positions = <16 17>;  // Adapted for 3x6 matrix
+            bindings = <&kp ENTER>;
+            layers = <BASE>;
+        };
+        
+        combo_del {
+            timeout-ms = <40>;
+            key-positions = <4 5>;  // Adapted for 3x6 matrix
+            bindings = <&kp DEL>;
+            layers = <BASE>;
+        };
+        
+        // Bracket types (only QWERTY layer)
+        combo_lpar {
+            timeout-ms = <40>;
+            key-positions = <9 10>;  // Adapted for 3x6 matrix
+            bindings = <&kp LPAR>;
+            layers = <BASE>;
+        };
+        
+        combo_rpar {
+            timeout-ms = <40>;
+            key-positions = <13 14>;  // Adapted for 3x6 matrix
+            bindings = <&kp RPAR>;
+            layers = <BASE>;
+        };
+        
+        combo_lbkt {
+            timeout-ms = <40>;
+            key-positions = <3 4>;  // Adapted for 3x6 matrix
+            bindings = <&kp LBKT>;
+            layers = <BASE>;
+        };
+        
+        combo_rbkt {
+            timeout-ms = <40>;
+            key-positions = <7 8>;  // Adapted for 3x6 matrix
+            bindings = <&kp RBKT>;
+            layers = <BASE>;
+        };
+        
+        combo_lbrc {
+            timeout-ms = <40>;
+            key-positions = <9 10>;  // Adapted for 3x6 matrix
+            bindings = <&kp LBRC>;
+            layers = <BASE>;
+        };
+        
+        combo_rbrc {
+            timeout-ms = <40>;
+            key-positions = <13 14>;  // Adapted for 3x6 matrix
+            bindings = <&kp RBRC>;
+            layers = <BASE>;
+        };
+        
+        // Special functions (only QWERTY layer)
+        combo_caps_word {
+            timeout-ms = <40>;
+            key-positions = <10 13>;  // Adapted for 3x6 matrix
+            bindings = <&caps_word>;
+            layers = <BASE>;
+        };
+        
+        combo_cut {
+            timeout-ms = <40>;
+            key-positions = <10 11>;
+            bindings = <&cut_macro>;
+            layers = <BASE>;
+        };
+
+        combo_copy {
+            timeout-ms = <40>;
+            key-positions = <11 12>;
+            bindings = <&copy_macro>;
+            layers = <BASE>;
+        };
+
+        combo_paste {
+            timeout-ms = <40>;
+            key-positions = <12 13>;
+            bindings = <&paste_macro>;
+            layers = <BASE>;
+        };
+
+        combo_undo {
+            timeout-ms = <40>;
+            key-positions = <9 11>;
+            bindings = <&undo_macro>;
+            layers = <BASE>;
+        };
+
+        combo_redo {
+            timeout-ms = <40>;
+            key-positions = <9 12>;
+            bindings = <&redo_macro>;
+            layers = <BASE>;
+        };
+
+        
+        // Programming symbols
+        combo_arrow {
+            timeout-ms = <40>;
+            key-positions = <4 5>;  // Adapted for 3x6 matrix
+            bindings = <&arrow_macro>;
+            layers = <BASE>;
+        };
+        
+        combo_fat_arrow {
+            timeout-ms = <40>;
+            key-positions = <16 17>;  // Adapted for 3x6 matrix
+            bindings = <&fat_arrow_macro>;
+            layers = <BASE>;
+        };
+        
+        // VS Code and vim combinations
+        combo_vscode_terminal {
+            timeout-ms = <40>;
+            key-positions = <8 9>;  // Adapted for 3x6 matrix
+            bindings = <&vscode_terminal>;
+            layers = <BASE>;
+        };
+        
+        combo_vscode_explorer {
+            timeout-ms = <40>;
+            key-positions = <9 10>;  // Adapted for 3x6 matrix
+            bindings = <&vscode_explorer>;
+            layers = <BASE>;
+        };
+        
+        combo_vscode_search {
+            timeout-ms = <40>;
+            key-positions = <10 11>;  // Adapted for 3x6 matrix
+            bindings = <&vscode_search>;
+            layers = <BASE>;
+        };
+        
+        combo_vscode_format {
+            timeout-ms = <40>;
+            key-positions = <11 12>;  // Adapted for 3x6 matrix
+            bindings = <&vscode_format>;
+            layers = <BASE>;
+        };
+        
+        combo_duplicate_line {
+            timeout-ms = <40>;
+            key-positions = <12 13>;  // Adapted for 3x6 matrix
+            bindings = <&duplicate_line>;
+            layers = <BASE>;
+        };
+        
+        combo_delete_line {
+            timeout-ms = <40>;
+            key-positions = <13 14>;  // Adapted for 3x6 matrix
+            bindings = <&delete_line>;
+            layers = <BASE>;
+        };
+        
+        combo_goto_definition {
+            timeout-ms = <40>;
+            key-positions = <14 15>;  // Adapted for 3x6 matrix
+            bindings = <&vscode_goto_definition>;
+            layers = <BASE>;
+        };
+        
+        combo_references {
+            timeout-ms = <40>;
+            key-positions = <15 16>;  // Adapted for 3x6 matrix
+            bindings = <&vscode_references>;
+            layers = <BASE>;
+        };
+        
+        // Task and messenger combinations
+        combo_spotlight {
+            timeout-ms = <40>;
+            key-positions = <1 2>;  // Adapted for 3x6 matrix
+            bindings = <&spotlight>;
+            layers = <BASE>;
+        };
+        
+        // Vim combinations
+        combo_vim_save {
+            timeout-ms = <40>;
+            key-positions = <2 3>;  // Adapted for 3x6 matrix
+            bindings = <&vim_save>;
+            layers = <BASE>;
+        };
+        
+        // Additional VS Code combinations
+        combo_vscode_comment {
+            timeout-ms = <40>;
+            key-positions = <12 13>;  // Adapted for 3x6 matrix
+            bindings = <&vscode_comment_line>;
+            layers = <BASE>;
+        };
+        
+        combo_vscode_sidebar {
+            timeout-ms = <40>;
+            key-positions = <13 14>;  // Adapted for 3x6 matrix
+            bindings = <&vscode_toggle_sidebar>;
+            layers = <BASE>;
+        };
+        
+        combo_vscode_panel {
+            timeout-ms = <40>;
+            key-positions = <14 15>;  // Adapted for 3x6 matrix
+            bindings = <&vscode_toggle_panel>;
+            layers = <BASE>;
+        };
+        
+        combo_vscode_quick_open {
+            timeout-ms = <40>;
+            key-positions = <15 16>;  // Adapted for 3x6 matrix
+            bindings = <&vscode_quick_open>;
+            layers = <BASE>;
+        };
+        
+        combo_vscode_symbol_search {
+            timeout-ms = <40>;
+            key-positions = <16 17>;  // Adapted for 3x6 matrix
+            bindings = <&vscode_symbol_search>;
+            layers = <BASE>;
+        };
+        
+        combo_vscode_rename {
+            timeout-ms = <40>;
+            key-positions = <17 18>;  // Adapted for 3x6 matrix
+            bindings = <&vscode_rename_symbol>;
+            layers = <BASE>;
+        };
+        
+        combo_vscode_problems {
+            timeout-ms = <40>;
+            key-positions = <18 19>;  // Adapted for 3x6 matrix
+            bindings = <&vscode_show_problems>;
+            layers = <BASE>;
+        };
+        
+        // macOS window management combinations
+        combo_app_expose {
+            timeout-ms = <40>;
+            key-positions = <19 20>;  // Adapted for 3x6 matrix
+            bindings = <&app_expose>;
+            layers = <BASE>;
+        };
+        
+        combo_mission_control {
+            timeout-ms = <40>;
+            key-positions = <20 21>;  // Adapted for 3x6 matrix
+            bindings = <&mission_control>;
+            layers = <BASE>;
+        };
+        
+        combo_app_switch {
+            timeout-ms = <40>;
+            key-positions = <21 22>;  // Adapted for 3x6 matrix
+            bindings = <&app_switch>;
+            layers = <BASE>;
+        };
+        
+        combo_reverse_app_switch {
+            timeout-ms = <40>;
+            key-positions = <22 23>;  // Adapted for 3x6 matrix
+            bindings = <&reverse_app_switch>;
+            layers = <BASE>;
+        };
+        
+        combo_copy_all {
+            timeout-ms = <40>;
+            key-positions = <24 25>;  // Adapted for 3x6 matrix
+            bindings = <&copy_all>;
+            layers = <BASE>;
+        };
+        
+        combo_paste_plain {
+            timeout-ms = <40>;
+            key-positions = <25 26>;  // Adapted for 3x6 matrix
+            bindings = <&paste_without_formatting>;
+            layers = <BASE>;
+        };
+        
+        // Browser combinations
+        combo_browser_find {
+            timeout-ms = <40>;
+            key-positions = <1 2>;  // Adapted for 3x6 matrix
+            bindings = <&browser_find>;
+            layers = <BASE>;
+        };
+        
+        // Task management combinations
+        combo_todoist {
+            timeout-ms = <40>;
+            key-positions = <2 3>;  // Adapted for 3x6 matrix
+            bindings = <&todoist_toggle>;
+            layers = <BASE>;
+        };
+        
+        combo_notion {
+            timeout-ms = <40>;
+            key-positions = <3 4>;  // Adapted for 3x6 matrix
+            bindings = <&notion_toggle>;
+            layers = <BASE>;
+        };
+        
+        // System function combinations
+        combo_force_quit {
+            timeout-ms = <40>;
+            key-positions = <4 5>;  // Adapted for 3x6 matrix
+            bindings = <&force_quit>;
+            layers = <BASE>;
+        };
+        
+        combo_emoji {
+            timeout-ms = <40>;
+            key-positions = <5 6>;  // Adapted for 3x6 matrix
+            bindings = <&emoji_picker>;
+            layers = <BASE>;
+        };
+    };
+
+    behaviors {
+        // Improved home row mods for 3x6 matrix
+        hml: homerow_mods_left {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            flavor = "balanced";
+            bindings = <&kp>, <&kp>;
+            hold-trigger-key-positions = <6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35>;  // Правая сторона (убрали 39 40 41 42 43)
+            hold-trigger-on-release;
+        };
+
+        hmr: homerow_mods_right {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            flavor = "balanced";
+            bindings = <&kp>, <&kp>;
+            hold-trigger-key-positions = <0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29>;    // Левая сторона (убрали 36 37 38)
+            hold-trigger-on-release;
+        };
+        
+        // Improved Ctrl/Esc
+        mt_lctl_esc: mt_lctl_esc {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping-term-ms = <175>;
+            quick-tap-ms = <120>;
+            flavor = "balanced";
+            bindings = <&kp>, <&kp>;
+        };
+
+        mt_rsft_ent: mt_rsft_ent {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping-term-ms = <190>;
+            quick-tap-ms = <120>;
+            flavor = "balanced";
+            bindings = <&kp>, <&kp>;
+        };
+
+        // Sticky keys with comfort settings
+        ss: sticky_shift {
+            compatible = "zmk,behavior-sticky-key";
+            #binding-cells = <1>;
+            bindings = <&kp>;
+            release-after-ms = <1200>;
+            quick-release;
+        };
+        
+        // Smart layer/keypress
+        smart_layer: smart_layer {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping-term-ms = <190>;
+            quick-tap-ms = <120>;
+            flavor = "balanced";
+            bindings = <&mo>, <&kp>;
+        };
+
+        // Tap dance for multiple functions
+        dt_lang: dt_lang {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <250>;
+            bindings = <&lang_switch>, <&to COLEMAK_DH>, <&to GAMING>;
+        };
+        
+        dt_shift: dt_shift {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&ss LSHFT>, <&caps_word>, <&kp CAPS>;
+        };
+
+        // Tap dance for VS Code and vim
+        dt_esc: dt_esc {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp ESC>, <&vim_save>, <&vscode_command_palette>;
+        };
+
+        dt_tab: dt_tab {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp TAB>, <&new_tab>, <&close_tab>;
+        };
+
+        dt_enter: dt_enter {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp ENTER>, <&vscode_terminal>, <&vscode_git>;
+        };
+
+        dt_space: dt_space {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp SPACE>, <&vscode_search>, <&spotlight>;
+        };
+
+        // Mod morphs for symbols
+        comma_semi: comma_semicolon {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp COMMA>, <&kp SEMICOLON>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+
+        dot_colon: dot_colon {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp DOT>, <&kp COLON>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+        
+        slash_qmark: slash_question {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp FSLH>, <&kp QMARK>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+        
+        excl_pipe: exclamation_pipe {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp EXCL>, <&kp PIPE>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+    };
+
+    macros {
+        // Language switch
+        lang_switch: lang_switch {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp SPACE>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        // Lock screen for macOS
+        lock_screen: lock_screen {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LCTRL>,
+                       <&macro_tap &kp Q>,
+                       <&macro_release &kp LGUI &kp LCTRL>;
+        };
+
+        // Desktop navigation
+        next_desktop: next_desktop {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LCTRL>,
+                       <&macro_tap &kp RIGHT>,
+                       <&macro_release &kp LCTRL>;
+        };
+
+        prev_desktop: prev_desktop {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LCTRL>,
+                       <&macro_tap &kp LEFT>,
+                       <&macro_release &kp LCTRL>;
+        };
+
+        // Window management
+        win_max: window_maximize {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp UP>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        win_left: window_left {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp LEFT>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        win_right: window_right {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp RIGHT>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        // Quick actions
+        screenshot: screenshot {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT>,
+                       <&macro_tap &kp S>,
+                       <&macro_release &kp LGUI &kp LSHFT>;
+        };
+
+        select_word: select_word {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LCTRL>,
+                       <&macro_tap &kp RIGHT>,
+                       <&macro_press &kp LSHFT>,
+                       <&macro_tap &kp LEFT>,
+                       <&macro_release &kp LCTRL &kp LSHFT>;
+        };
+        
+        select_line: select_line {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_tap &kp HOME>,
+                       <&macro_press &kp LSHFT>,
+                       <&macro_tap &kp END>,
+                       <&macro_release &kp LSHFT>;
+        };
+        
+        // Programming symbols
+        arrow_macro: arrow_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_tap &kp MINUS &kp GT>;
+        };
+        
+        fat_arrow_macro: fat_arrow_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_tap &kp EQUAL &kp GT>;
+        };
+        
+        // Vim commands (macOS optimized)
+        vim_save: vim_save {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp S>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        // VS Code macros for programmer-manager (macOS optimized)
+        vscode_terminal: vscode_terminal {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LCTRL>,
+                       <&macro_tap &kp GRAVE>,
+                       <&macro_release &kp LCTRL>;
+        };
+
+        vscode_explorer: vscode_explorer {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT>,
+                       <&macro_tap &kp E>,
+                       <&macro_release &kp LGUI &kp LSHFT>;
+        };
+
+        vscode_search: vscode_search {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT>,
+                       <&macro_tap &kp F>,
+                       <&macro_release &kp LGUI &kp LSHFT>;
+        };
+
+        vscode_command_palette: vscode_command_palette {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT>,
+                       <&macro_tap &kp P>,
+                       <&macro_release &kp LGUI &kp LSHFT>;
+        };
+
+        vscode_git: vscode_git {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT>,
+                       <&macro_tap &kp G>,
+                       <&macro_release &kp LGUI &kp LSHFT>;
+        };
+
+        // Task and messenger macros
+        slack_toggle: slack_toggle {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT>,
+                       <&macro_tap &kp S>,
+                       <&macro_release &kp LGUI &kp LSHFT>;
+        };
+
+        spotlight: spotlight {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp SPACE>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        // Code formatting macros
+        vscode_format: vscode_format {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LSHFT &kp LALT>,
+                       <&macro_tap &kp F>,
+                       <&macro_release &kp LSHFT &kp LALT>;
+        };
+
+        // Code navigation macros
+        vscode_goto_definition: vscode_goto_definition {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp F12>,
+                       <&macro_release &kp F12>;
+        };
+
+        vscode_references: vscode_references {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LSHFT &kp F12>,
+                       <&macro_release &kp LSHFT &kp F12>;
+        };
+
+        // Text manipulation macros
+        duplicate_line: duplicate_line {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LALT>,
+                       <&macro_tap &kp D>,
+                       <&macro_release &kp LALT>;
+        };
+
+        delete_line: delete_line {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT>,
+                       <&macro_tap &kp K>,
+                       <&macro_release &kp LGUI &kp LSHFT>;
+        };
+
+        // Tab management macros
+        new_tab: new_tab {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT>,
+                       <&macro_tap &kp T>,
+                       <&macro_release &kp LGUI &kp LSHFT>;
+        };
+
+        close_tab: close_tab {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT>,
+                       <&macro_tap &kp W>,
+                       <&macro_release &kp LGUI &kp LSHFT>;
+        };
+
+        // Additional programmer-manager macros
+        vscode_comment_line: vscode_comment_line {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp SLASH>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        vscode_toggle_sidebar: vscode_toggle_sidebar {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp B>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        vscode_toggle_panel: vscode_toggle_panel {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp J>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        vscode_quick_open: vscode_quick_open {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp P>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        vscode_symbol_search: vscode_symbol_search {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT>,
+                       <&macro_tap &kp O>,
+                       <&macro_release &kp LGUI &kp LSHFT>;
+        };
+
+        vscode_rename_symbol: vscode_rename_symbol {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp F2>,
+                       <&macro_release &kp F2>;
+        };
+
+        vscode_show_problems: vscode_show_problems {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT>,
+                       <&macro_tap &kp M>,
+                       <&macro_release &kp LGUI &kp LSHFT>;
+        };
+
+        // macOS window management macros
+        app_expose: app_expose {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LCTRL>,
+                       <&macro_tap &kp DOWN>,
+                       <&macro_release &kp LCTRL>;
+        };
+
+        mission_control: mission_control {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LCTRL>,
+                       <&macro_tap &kp UP>,
+                       <&macro_release &kp LCTRL>;
+        };
+
+        app_switch: app_switch {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp TAB>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        reverse_app_switch: reverse_app_switch {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT>,
+                       <&macro_tap &kp TAB>,
+                       <&macro_release &kp LGUI &kp LSHFT>;
+        };
+
+        // Text manipulation macros
+        select_all: select_all {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp A>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        copy_all: copy_all {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp A>,
+                       <&macro_release &kp LGUI>,
+                       <&macro_press &kp LGUI>,
+                       <&macro_tap &kp C>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        paste_without_formatting: paste_without_formatting {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT &kp LALT>,
+                       <&macro_tap &kp V>,
+                       <&macro_release &kp LGUI &kp LSHFT &kp LALT>;
+        };
+
+        // Browser macros
+        browser_refresh: browser_refresh {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp R>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        browser_dev_tools: browser_dev_tools {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LALT>,
+                       <&macro_tap &kp I>,
+                       <&macro_release &kp LGUI &kp LALT>;
+        };
+
+        browser_find: browser_find {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI>,
+                       <&macro_tap &kp F>,
+                       <&macro_release &kp LGUI>;
+        };
+
+        // Task management macros
+        todoist_toggle: todoist_toggle {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT>,
+                       <&macro_tap &kp T>,
+                       <&macro_release &kp LGUI &kp LSHFT>;
+        };
+
+        notion_toggle: notion_toggle {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT>,
+                       <&macro_tap &kp N>,
+                       <&macro_release &kp LGUI &kp LSHFT>;
+        };
+
+        // System function macros
+        force_quit: force_quit {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LALT>,
+                       <&macro_tap &kp ESC>,
+                       <&macro_release &kp LGUI &kp LALT>;
+        };
+
+        emoji_picker: emoji_picker {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_press &kp LGUI &kp LCTRL>,
+                       <&macro_tap &kp SPACE>,
+                       <&macro_release &kp LGUI &kp LCTRL>;
+        };
+
+        // Combo macros
+        cut_macro: cut_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp LCTRL &macro_tap &kp X &macro_release &kp LCTRL>;
+        };
+
+        copy_macro: copy_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp LCTRL &macro_tap &kp C &macro_release &kp LCTRL>;
+        };
+
+        paste_macro: paste_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp LCTRL &macro_tap &kp V &macro_release &kp LCTRL>;
+        };
+
+        undo_macro: undo_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp LCTRL &macro_tap &kp Z &macro_release &kp LCTRL>;
+        };
+
+        redo_macro: redo_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp LCTRL &kp LSHFT &macro_tap &kp Z &macro_release &kp LCTRL &kp LSHFT>;
+        };
+
+        alt_tab_macro: alt_tab_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp LALT &macro_tap &kp TAB &macro_release &kp LALT>;
+        };
+
+        cmd_tab_macro: cmd_tab_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp LGUI &macro_tap &kp TAB &macro_release &kp LGUI>;
+        };
+
+        cmd_shift_tab_macro: cmd_shift_tab_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp LGUI &kp LSHFT &macro_tap &kp TAB &macro_release &kp LGUI &kp LSHFT>;
+        };
+    };
+
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        tri_layer {
+            if-layers = <LOWER SYMB>;
+            then-layer = <ADJUST>;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
-        default_layer {
+        // Base layer (QWERTY)
+        BASE {
             bindings = <
-&mt LALT ESC     &kp Q  &kp W  &kp E     &kp R  &kp T      &kp Y      &kp U          &kp I                  &kp O    &kp P     &kp LBKT
-&mt LCTRL TAB    &kp A  &kp S  &kp D     &kp F  &kp G      &kp H      &kp J          &kp K                  &kp L    &kp SEMI  &kp SQT
-&mt LSHIFT BSLH  &kp Z  &kp X  &kp C     &kp V  &kp B      &kp N      &kp M          &kp COMMA              &kp DOT  &kp FSLH  &mt LALT GRAVE
-                               &kp LGUI  &mo 1  &lt 2 RET  &kp SPACE  &kp BACKSPACE  &mt LS(LEFT_ALT) CAPS
+        &kp TAB            &kp Q              &kp W              &kp E              &kp R              &kp T                                                      &kp Y              &kp U              &kp I              &kp O              &kp P                &kp LBKT
+        &mt LCTRL ESC      &hml LGUI A        &hml LALT S        &hml LCTRL D       &hml LSHFT F       &kp G                                                      &kp H              &hmr RSHFT J       &hmr RCTRL K       &hmr RALT L        &hmr RGUI SEMI       &kp SQT
+        &dt_shift          &kp Z              &kp X              &kp C              &kp V              &kp B                                                      &kp N              &kp M              &comma_semi        &dot_colon         &kp RIGHT_BRACKET    &mt RSHFT ENTER
+                                                                &dt_lang           &smart_layer LOWER SPACE &kp LGUI                                              &kp RALT           &smart_layer SYMB BSPC
             >;
         };
 
-        lower_layer {
+
+        // Numbers, F-keys and math
+        LOWER {
             bindings = <
-&trans     &kp N1    &kp N2       &kp N3        &kp N4          &kp N5            &kp N6             &kp N7           &kp N8     &kp N9                &kp N0                 &trans
-&trans     &kp EXCL  &kp AT       &kp HASH      &kp DOLLAR      &kp PERCENT       &kp CARET          &kp AMPS         &kp ASTRK  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &none
-&kp LSHFT  &none     &kp KP_PLUS  &kp KP_MINUS  &kp LEFT_BRACE  &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp RIGHT_BRACE  &kp MINUS  &kp EQUAL             &none                  &kp BSLH
-                                  &kp LGUI      &trans          &mo 3             &trans             &kp DEL          &kp QMARK
+    &kp F1             &kp F2             &kp F3             &kp F4             &kp F5             &kp F6                                                     &kp F7             &kp F8             &kp F9             &kp F10            &kp F11              &kp F12
+    &mt_lctl_esc LCTRL ESC &hml LGUI AMPS     &hml LALT LPAR     &hml LCTRL RPAR    &hml LSHFT UNDER   &kp MINUS                                                  &kp EQUAL          &hmr RSHFT N4      &hmr RCTRL N5      &hmr RALT N6       &hmr RGUI DOT        &kp FSLH
+    &bootloader        &kp PIPE           &kp LBKT           &kp RBKT           &kp LBRC           &kp RBRC                                                   &kp N0             &kp N1             &kp N2             &kp N3             &kp COMMA            &mt_rsft_ent RSHFT ENTER
+                                                               &trans             &trans             &trans                                                     &trans             &kp DEL
             >;
         };
 
-        raise_layer {
+        // Symbols and special keys
+        SYMB {
             bindings = <
-&kp LS(LG(N4))  &kp LS(LC(LG(N4)))  &kp LS(LG(N5))  &none     &kp PAGE_DOWN  &kp HOME  &none               &none                &kp PG_UP     &kp PG_DN      &kp HOME  &kp LS(LG(LC(N4)))
-&kp F1          &kp F2              &kp F3          &kp F4    &kp F5         &kp F6    &kp LEFT            &kp DOWN             &kp UP_ARROW  &kp RIGHT      &kp END   &none
-&kp F7          &kp F8              &kp F9          &kp F10   &kp F11        &kp F12   &kp LC(LEFT_ARROW)  &kp LC(RIGHT_ARROW)  &kp LA(LEFT)  &kp LA(RIGHT)  &trans    &trans
-                                                    &kp LGUI  &mo 3          &trans    &trans              &trans               &trans
+    &kp TILDE          &kp EXCL           &kp LT             &kp GT             &kp GRAVE          &kp PIPE                                                   &kp AMPS        &kp UNDER          &kp LBKT           &kp RBKT           &kp PRCNT            &kp AMPS
+    &mt LCTRL ESC      &hml LGUI AT       &hml LALT MINUS    &hml LCTRL PLUS    &hml LSHFT EQUAL   &kp HASH                                                   &kp PIPE        &hmr RSHFT COLON   &hmr RCTRL LPAR    &hmr RALT RPAR     &hmr RGUI QMARK      &kp SQT
+    &dt_shift          &kp CARET          &kp FSLH           &kp STAR           &kp BSLH           &none                                                      &kp TILDE       &kp DLLR           &kp LBRC           &kp RBRC           &kp AT               &mt RSHFT ENTER
+                                                                &trans             &kp SPACE          &trans                                                     &trans             &trans
             >;
         };
 
-        adjust_layer {
+
+        // Navigation, multimedia and system functions
+        NAV {
             bindings = <
-&sys_reset    &bootloader    &none         &none         &none         &none         &none         &none         &none         &none         &bootloader   &sys_reset
-&bt BT_CLR    &bt BT_SEL 0   &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4  &bt BT_SEL 4  &bt BT_SEL 3  &bt BT_SEL 2  &bt BT_SEL 1  &bt BT_SEL 0  &bt BT_CLR
-&out OUT_TOG  &studio_unlock &none         &none         &none         &none         &none         &none         &none         &none         &studio_unlock &out OUT_TOG
-                                           &trans        &none         &trans        &trans        &none         &trans
+    &alt_tab_macro     &cmd_tab_macro       &trans               &trans       &cmd_shift_tab_macro  &screenshot    &kp PG_UP    &win_left    &kp UP       &win_right   &win_max     &trans
+    &mt_lctl_esc LCTRL ESC &hml LGUI HOME     &hml LALT PG_DN    &hml LCTRL PG_UP   &hml LSHFT END     &trans         &kp PG_DN    &hmr RSHFT LEFT    &hmr RCTRL DOWN    &hmr RALT RIGHT    &hmr RGUI HOME    &trans
+    &dt_shift          &prev_desktop      &vim_save         &select_word       &next_desktop      &prev_desktop  &select_line &kp HOME     &kp END      &kp INS      &kp DEL      &mt_rsft_ent RSHFT ENTER
+                                                               &trans             &trans             &trans         &trans       &kp C_MUTE
+            >;
+        };
+
+        // Settings, Bluetooth and debug
+        ADJUST {
+            bindings = <
+    &trans             &bt BT_CLR         &trans             &trans             &trans             &out OUT_TOG                                               &trans             &kp C_VOL_UP       &kp C_MUTE         &kp C_VOL_DN       &trans               &trans
+    &mt_lctl_esc LCTRL ESC &trans             &trans             &trans             &trans             &trans                                                     &kp LEFT           &kp DOWN           &kp UP             &kp RIGHT          &trans               &trans
+    &dt_shift          &bootloader        &sys_reset         &trans             &trans             &trans                                                     &kp HOME           &kp PG_DN          &kp PG_UP          &kp END            &trans               &mt_rsft_ent RSHFT ENTER
+                                                               &to BASE           &trans             &trans                                                     &trans             &trans             &to BASE
+            >;
+        };
+
+        // Colemak-DH layer
+        COLEMAK_DH {
+            bindings = <
+    &kp TAB                &kp B                  &kp Y                  &kp O                  &kp U                  &kp SQT                                                            &slash_qmark           &kp L                  &kp D                  &kp W                  &kp V                  &kp Z
+    &mt_lctl_esc LCTRL ESC &hml LGUI C            &hml LALT I            &hml LCTRL E           &hml LSHFT A           &comma_semi                                                        &dot_colon             &hmr RSHFT H           &hmr RCTRL T           &hmr RALT S            &hmr RGUI N            &kp Q
+    &dt_shift              &kp G                  &kp X                  &kp J                  &kp K                  &excl_pipe                                                         &kp SEMI               &kp R                  &kp M                  &kp F                  &kp P                  &mt_rsft_ent RSHFT ENTER
+                                                                           &to BASE           &smart_layer LOWER SPACE &kp LGUI                                                         &kp RALT               &smart_layer SYMB BSPC
+            >;
+        };
+
+        // Gaming layer
+        GAMING {
+            bindings = <
+    &kp TAB            &kp Q              &kp W              &kp E              &kp R              &kp T                                                      &kp Y              &kp U              &kp I              &kp O              &kp P                &kp LBKT
+    &kp ESC            &hml LGUI A        &hml LALT S        &hml LCTRL D       &hml LSHFT F       &kp G                                                      &kp H              &hmr RSHFT J       &hmr RCTRL K       &hmr RALT L        &hmr RGUI SEMI       &kp SQT
+    &dt_shift          &kp Z              &kp X              &kp C              &kp V              &kp B                                                      &kp N              &kp M              &comma_semi        &dot_colon         &kp FSLH             &mt_rsft_ent RSHFT ENTER
+                                                               &to BASE           &kp SPACE          &kp LCTRL                                                  &kp RALT           &kp BSPC
             >;
         };
     };
